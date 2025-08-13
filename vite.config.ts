@@ -4,6 +4,7 @@ import { defineConfig, type ViteDevServer } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { vercelPreset } from "@vercel/remix/vite";
 
 export default defineConfig((config) => {
   return {
@@ -21,6 +22,7 @@ export default defineConfig((config) => {
           v3_relativeSplatPath: true,
           v3_throwAbortReason: true,
         },
+        presets: [vercelPreset()]
       }),
       UnoCSS(),
       tsconfigPaths(),

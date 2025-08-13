@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs } from '@remix-run/cloudflare';
+import { type ActionFunctionArgs } from '@remix-run/node';
 import { MAX_RESPONSE_SEGMENTS, MAX_TOKENS } from '~/lib/.server/llm/constants';
 import { CONTINUE_PROMPT } from '~/lib/.server/llm/prompts';
 import { streamText, type Messages, type StreamingOptions } from '~/lib/.server/llm/stream-text';

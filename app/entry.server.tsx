@@ -1,8 +1,8 @@
-import type { AppLoadContext, EntryContext } from '@remix-run/cloudflare';
+import type { AppLoadContext, EntryContext } from '@vercel/remix';
 import { RemixServer } from '@remix-run/react';
 import { isbot } from 'isbot';
 import { renderToReadableStream } from 'react-dom/server';
-import { renderHeadToString } from 'remix-island';
+import pkg from 'react-dom/server';
 import { Head } from './root';
 import { themeStore } from '~/lib/stores/theme';
 
@@ -13,6 +13,7 @@ export default async function handleRequest(
   remixContext: EntryContext,
   _loadContext: AppLoadContext,
 ) {
+  const { renderToReadableStream } = pkg;
   const readable = await renderToReadableStream(<RemixServer context={remixContext} url={request.url} />, {
     signal: request.signal,
     onError(error: unknown) {
@@ -22,13 +23,14 @@ export default async function handleRequest(
   });
 
   const body = new ReadableStream({
-    start(controller) {
-      const head = renderHeadToString({ request, remixContext, Head });
+    async start(controller) {
+      // Dynamically import renderHeadToString
+      const { renderHeadToString } = await import('remix-island');
 
       controller.enqueue(
         new Uint8Array(
           new TextEncoder().encode(
-            `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${head}</head><body><div id="root" class="w-full h-full">`,
+            `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${Head}</head><body><div id="root" class="w-full h-full">`,
           ),
         ),
       );
