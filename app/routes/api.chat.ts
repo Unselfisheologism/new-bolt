@@ -15,7 +15,6 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
 
   try {
     const options: StreamingOptions = {
-      toolChoice: 'none',
       onFinish: async ({ text: content, finishReason }) => {
         if (finishReason !== 'length') {
           return stream.close();
@@ -32,13 +31,13 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
         messages.push({ role: 'assistant', content });
         messages.push({ role: 'user', content: CONTINUE_PROMPT });
 
-        const result = await streamText(messages, context.cloudflare.env, options);
+        const result = await streamText(messages, options);
 
         return stream.switchSource(result.toAIStream());
       },
     };
 
-    const result = await streamText(messages, context.cloudflare.env, options);
+    const result = await streamText(messages, options);
 
     stream.switchSource(result.toAIStream());
 
