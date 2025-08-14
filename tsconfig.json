@@ -29,5 +29,5 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx"
-  ]
+, "app/entry.server.js"  ]
 }
