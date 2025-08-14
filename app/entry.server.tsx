@@ -5,6 +5,7 @@ import { renderToReadableStream } from 'react-dom/server';
 import pkg from 'react-dom/server';
 import { Head } from './root';
 import { themeStore } from '~/lib/stores/theme';
+import { renderHeadToString } from 'remix-island'; // Static import
 
 export default async function handleRequest(
   request: Request,
@@ -24,8 +25,8 @@ export default async function handleRequest(
 
   const body = new ReadableStream({
     async start(controller) {
-      // Dynamically import renderHeadToString
-      const { renderHeadToString } = await import('remix-island');
+      // Remove the dynamic import
+      // const { renderHeadToString } = await import('remix-island');
 
       controller.enqueue(
         new Uint8Array(
